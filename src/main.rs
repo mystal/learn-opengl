@@ -2,7 +2,7 @@ extern crate glium;
 extern crate glutin;
 
 use glium::{DisplayBuild, Surface};
-use glutin::{Api, GlRequest};
+use glutin::{Api, ElementState, Event, GlRequest, VirtualKeyCode};
 
 fn main() {
     // Build a window with OpenGL 3.3
@@ -13,14 +13,15 @@ fn main() {
 
     loop {
         for event in window.poll_events() {
-            let mut target = window.draw();
-            target.clear_color(0.0, 0.0, 1.0, 1.0);
-            target.finish().unwrap();
-
             match event {
-                glutin::Event::Closed => return,
+                Event::Closed => return,
+                Event::KeyboardInput(ElementState::Pressed, _, Some(VirtualKeyCode::Escape)) => return,
                 _ => {},
             }
         }
+
+        let mut target = window.draw();
+        target.clear_color(0.2, 0.3, 0.3, 1.0);
+        target.finish().unwrap();
     }
 }
