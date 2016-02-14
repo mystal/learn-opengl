@@ -1,7 +1,9 @@
+extern crate clap;
 #[macro_use]
 extern crate glium;
 extern crate glutin;
 
+use clap::App;
 use glium::{DisplayBuild, Surface};
 use glutin::{Api, ElementState, Event, GlRequest, VirtualKeyCode};
 
@@ -13,6 +15,11 @@ struct Vertex {
 implement_vertex!(Vertex, position);
 
 fn main() {
+    let args = App::new("hello_rectangle")
+                       .args_from_usage(
+                           "-w, --wireframe 'Draw just the wireframe'")
+                       .get_matches();
+
     // Build a window with OpenGL 3.3
     let window = glutin::WindowBuilder::new()
         .with_gl(GlRequest::Specific(Api::OpenGl, (3, 3)))
@@ -56,6 +63,17 @@ fn main() {
 
     let program = glium::Program::from_source(&window, vertex_shader_src, fragment_shader_src, None).unwrap();
 
+    let polygon_mode = if args.is_present("wireframe") {
+        glium::draw_parameters::PolygonMode::Line
+    } else {
+        glium::draw_parameters::PolygonMode::Fill
+    };
+
+    let draw_params = glium::DrawParameters {
+        polygon_mode: polygon_mode,
+        .. Default::default()
+    };
+
     loop {
         for event in window.poll_events() {
             match event {
@@ -67,7 +85,7 @@ fn main() {
 
         let mut target = window.draw();
         target.clear_color(0.2, 0.3, 0.3, 1.0);
-        target.draw(&vertex_buffer, &index_buffer, &program, &glium::uniforms::EmptyUniforms, &Default::default()).unwrap();
+        target.draw(&vertex_buffer, &index_buffer, &program, &glium::uniforms::EmptyUniforms, &draw_params).unwrap();
         target.finish().unwrap();
     }
 }
