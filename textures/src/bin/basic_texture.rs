@@ -45,7 +45,18 @@ fn main() {
     // Load shaders
     let vertex_shader_src = include_str!("shaders/basic_texture.vs");
     let fragment_shader_src = include_str!("shaders/basic_texture.fs");
-    let program = glium::Program::from_source(&window, vertex_shader_src, fragment_shader_src, None).unwrap();
+    let program_creation_input = glium::program::ProgramCreationInput::SourceCode {
+        vertex_shader: vertex_shader_src,
+        fragment_shader: fragment_shader_src,
+        geometry_shader: None,
+        tessellation_control_shader: None,
+        tessellation_evaluation_shader: None,
+        transform_feedback_varyings: None,
+        outputs_srgb: true,
+        uses_point_size: false,
+    };
+    let program = glium::Program::new(&window, program_creation_input).unwrap();
+    println!("Has sRGB output: {}", program.has_srgb_output());
 
     // Uniforms
     let uniforms = uniform! {
@@ -62,7 +73,7 @@ fn main() {
         }
 
         let mut target = window.draw();
-        target.clear_color(0.2, 0.3, 0.3, 1.0);
+        target.clear_color_srgb(0.2, 0.3, 0.3, 1.0);
         target.draw(&vertex_buffer, &index_buffer, &program, &uniforms, &Default::default()).unwrap();
         target.finish().unwrap();
     }
