@@ -1,0 +1,11 @@
+[package]
+name = "coordinate_systems"
+version = "0.1.0"
+authors = ["Gabriel Martinez <reitaka@gmail.com>"]
+
+[dependencies]
+clap = "*"
+cgmath = "*"
+glium = "*"
+glutin = "*"
+image = "*"
