@@ -2,11 +2,12 @@
 extern crate glium;
 extern crate glutin;
 
+
 use glium::{DisplayBuild, Surface};
 use glutin::{Api, ElementState, Event, GlRequest, VirtualKeyCode};
 
-use std::f32;
 use std::time::Instant;
+
 
 #[derive(Clone, Copy)]
 struct Vertex {
@@ -14,6 +15,7 @@ struct Vertex {
 }
 
 implement_vertex!(Vertex, position);
+
 
 fn main() {
     // Build a window with OpenGL 3.3
@@ -72,7 +74,7 @@ fn main() {
             }
         }
 
-        let green_value = (f32::sin(elapsed_as_f32()) / 2.0) + 0.5;
+        let green_value = (elapsed_as_f32().sin() / 2.0) + 0.5;
         let color = [0.0, green_value, 0.0, 1.0];
 
         let mut target = window.draw();
