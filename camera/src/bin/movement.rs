@@ -171,7 +171,7 @@ fn main() {
         let view = cgmath::Matrix4::look_at(cgmath::Point3::from_vec(camera_pos),
                                             cgmath::Point3::from_vec(camera_pos + camera_front),
                                             camera_up);
-        let fovy = cgmath::deg(45.0);
+        let fovy = cgmath::Deg(45.0);
         let aspect = screen_width as f32 / screen_height as f32;
         let projection = cgmath::perspective(fovy, aspect, 0.1, 100.0);
 
@@ -182,8 +182,8 @@ fn main() {
             // Create the transformation matrices
             let translate = cgmath::Matrix4::from_translation(pos.clone());
             let rotate_axis = cgmath::vec3(1.0f32, 0.3, 0.5);
-            let rotate_angle = cgmath::deg(20.0 * i as f32);
-            let rotate: cgmath::Matrix4<f32> = cgmath::Matrix3::from_axis_angle(rotate_axis, rotate_angle.into()).into();
+            let rotate_angle = cgmath::Deg(20.0 * i as f32);
+            let rotate: cgmath::Matrix4<f32> = cgmath::Matrix4::from_axis_angle(rotate_axis, rotate_angle);
             let model = translate * rotate;
 
             // Uniforms
